@@ -1,0 +1,9 @@
+{% include 'base.html' %}
+{% block content %}
+<h3>{{ quest.title }}</h3>
+<h5> {{ quest.text }} </h5>
+{% for xx in ans %}
+<p> {{ xx.text }}</p>
+{% endfor %}
+{% endblock %}
+

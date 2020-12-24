@@ -23,7 +23,7 @@ class Question(models.Model):
     likes = models.ManyToManyField(User, related_name = 'likes_set')
 
     def __unicode__(self):
-        return u'%s' % self.first_title
+        return u'%s' % self.title
 
     class Meta:
         db_table = 'question'
@@ -40,4 +40,5 @@ class Answer(models.Model):
 
     class Meta:
         db_table = 'answer'
+
 

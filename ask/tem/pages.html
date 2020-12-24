@@ -1,0 +1,11 @@
+{% include 'base.html' %}
+{% block content %}
+<h1>{{ header }}</h>
+{% for pp in page %}
+<h6> {{ pp }} <a href="/question/{{ pp.id }}"> read...</a></h6>
+{% endfor %}
+
+{% for p in pagin.page_range %}
+<a href="{{ pagin.baseurl }}{{ p }}">{{ p }}</a>
+{% endfor %}
+{% endblock %}
