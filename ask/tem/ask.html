@@ -5,16 +5,14 @@
   <p style = "color: red;"> Fix errors: {{ form.errors }}</p>
 {% endif %}
 
-<h3>{{ quest.title }}</h3>
-<h5> {{ quest.text }} </h5>
-{% for xx in ans %}
-<p> {{ xx.text }}</p>
-{% endfor %}
+
 <form action = "" method = "post">
 {% csrf_token %}
-  {{ form.text }}
-<b style = "display: none;">  {{ form.question }} </b>
+<table>
+  {{ form.as_table }}
+ </table>
   <input type = "submit" value = "Send">
 </form>
 {% endblock %}
+
 
