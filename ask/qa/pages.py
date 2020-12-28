@@ -3,7 +3,9 @@ from django.core.paginator import Paginator
 from qa.models import Question, Answer
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
-from qa.forms import AnswerForm, AskForm
+from qa.forms import AnswerForm, AskForm, SignupForm, LoginForm
+from django.contrib import auth
+from django.contrib.auth.models import User
 
 def pages(request, name):
     if name == 'home':
@@ -38,7 +40,7 @@ def quest(request, slug):
             cd = form.cleaned_data
             txt = request.POST['text']
             qw = Question.objects.get(id = request.POST['question'])
-            c = Answer.objects.create(text = txt, question = qw)
+            c = Answer.objects.create(text = txt, question = qw, author = request.user)
             return HttpResponseRedirect(que.get_url())
     else:
         form = AnswerForm(initial = {'question': que.id})
@@ -56,8 +58,7 @@ def ask(request):
             cd = form.cleaned_data
             txt = request.POST['text']
             tit = request.POST['title']
-            c = Question.objects.create(text = txt, title = tit)
-#            que = Question.objects.get(id=str(c))
+            c = Question.objects.create(text = txt, title = tit, author = request.user)
             return HttpResponseRedirect(c.get_url())
         else:
             form = AskForm(initial = {'title': request.POST.get('title', ''), 'text': request.POST.get('text', '')})
@@ -68,3 +69,38 @@ def ask(request):
         }
     )
 
+
+def signup(request):
+    if request.method == 'POST':
+        pw = request.POST.get('password', '')
+        un = request.POST.get('username', '')
+        em = request.POST.get('email', '')
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(un, em, pw)
+            user = auth.authenticate(username=un, password = pw)
+            auth.login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            form = SignupForm(request.POST)
+    else:
+        form = SignupForm()
+    return render(request, 'signup.html', {
+        'form': form })
+
+
+def login(request):
+    if request.method == 'POST':
+        pw = request.POST.get('password', '')
+        un = request.POST.get('username', '')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = auth.authenticate(username=un, password=pw)
+            auth.login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            form = LoginForm(request.POST)
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {
+        'form': form })

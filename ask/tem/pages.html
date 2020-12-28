@@ -1,6 +1,6 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
-<h1>{{ header }}</h>
+<h1>{{ header }}</h1>
 {% for pp in page %}
 <h6> {{ pp }} <a href="/question/{{ pp.id }}"> read...</a></h6>
 {% endfor %}

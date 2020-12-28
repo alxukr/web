@@ -1,14 +1,14 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 
 {% if form.errors %}
   <p style = "color: red;"> Fix errors: {{ form.errors }}</p>
 {% endif %}
 
-<h3>{{ quest.title }}</h3>
-<h5> {{ quest.text }} </h5>
+<h3>{{ quest.author }}: {{ quest.title }}</h3>
+<h5> {{ quest.text }}</h5>
 {% for xx in ans %}
-<p> {{ xx.text }}</p>
+<p> {{ xx.author }}: {{ xx.text }} </p>
 {% endfor %}
 <form action = "" method = "post">
 {% csrf_token %}
